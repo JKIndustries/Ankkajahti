@@ -8,6 +8,8 @@ package ankkajahti;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import javax.swing.Timer;
 
@@ -15,17 +17,17 @@ import javax.swing.Timer;
  *
  * @author jphanski
  */
-public class Ikkuna extends javax.swing.JPanel implements ActionListener {
-    LinkedList<Ankka> ankat;
+public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseListener {
+    Ankka[] ankat;
     public int fps;
     private Timer timer;
     /**
      * Creates new form Ikkuna
      */
-    public Ikkuna(LinkedList<Ankka> ankat) {
+    public Ikkuna() {
         initComponents();
-        this.ankat = ankat;
         fps = 0;
+        addMouseListener(this);
         
         timer = new Timer(1000/Ankkajahti.ticks, this);
         timer.start(); 
@@ -85,6 +87,40 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener {
         Toolkit.getDefaultToolkit().sync();
         fps++;
         timer.restart();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        for (Ankka a : ankat) {
+            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getHeight() + 20 > e.getX() && a.getY() * this.getWidth() < e.getY() && a.getY() * this.getHeight() + 20 > e.getY()) {
+                //Tuhotaan ankka johon osui
+                Ankkajahti.tuhoaAnkka(a);
+                System.out.println("Osui!");
+                return;
+            }
+            System.out.print(a.getX()*this.getWidth() + ", " + a.getY() * this.getWidth() + ".\n");
+        }
+        System.out.println("At least you tried :( \n Coordinates: " + e.paramString());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
     }
 
 

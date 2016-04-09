@@ -18,7 +18,8 @@ class Ankka {
     private double speed;
     private double direction;
     private static Random r = new Random();
-
+    
+    
     public Ankka() {
         setDirection(r.nextDouble() * Math.PI / 4 + 9 * Math.PI / 8);
         //setDirection(Math.PI / 4);

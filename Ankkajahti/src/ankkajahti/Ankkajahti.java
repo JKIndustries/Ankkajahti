@@ -18,6 +18,7 @@ public class Ankkajahti {
     public static int ankkaKentta = 2;
     public static int ticks = 60;
     public static double gravity = -0.005;
+    public static LinkedList<Ankka> ankat;
 
     /**
      * @param args the command line arguments
@@ -25,13 +26,14 @@ public class Ankkajahti {
     public static void main(String[] args) {
         Ankka ankka;
         long now = System.currentTimeMillis();
-        LinkedList<Ankka> ankat = new LinkedList<>();
+        ankat = new LinkedList<>();
+        Ankka[] piirrettavatAnkat;
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
         JFrame f = new JFrame("Ankkajahti 0.01");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Ikkuna peliIkkuna = new Ikkuna(ankat);
+        Ikkuna peliIkkuna = new Ikkuna();
         f.add(peliIkkuna);
         f.pack();
         f.setVisible(true);
@@ -59,6 +61,11 @@ public class Ankkajahti {
                 }
             }
             
+            piirrettavatAnkat = new Ankka[ankat.size()];
+            for (int i = 0; i<ankat.size(); i++) {
+                piirrettavatAnkat[i] = ankat.get(i);
+            }
+            peliIkkuna.ankat = piirrettavatAnkat;
             
             //Pelitilanteen piirtäminen
             
@@ -81,7 +88,7 @@ public class Ankkajahti {
             System.out.println("Kentällä " + ankat.size() + " ankkaa.");
             */
             if (System.currentTimeMillis() > fpsCounter + 1000) {
-                System.out.println("FPS: " + peliIkkuna.fps);
+                //System.out.println("FPS: " + peliIkkuna.fps);
                 peliIkkuna.fps = 0;
                 fpsCounter += 1000;
             }
@@ -93,6 +100,10 @@ public class Ankkajahti {
             ankat.add(ankka);
 
         }
+    }
+
+    static void tuhoaAnkka(Ankka a) {
+        ankat.remove(a);
     }
 
 }
