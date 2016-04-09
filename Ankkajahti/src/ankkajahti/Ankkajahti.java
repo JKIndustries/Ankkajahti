@@ -7,15 +7,18 @@ package ankkajahti;
 
 import java.util.LinkedList;
 import java.util.Random;
+import javax.swing.JFrame;
 
 /**
  *
  * @author jphanski
  */
 public class Ankkajahti {
-    public static int ankkaKentta = 15;
-    public static int ticks = 7;
-    public static double gravity = 0.5;
+
+    public static int ankkaKentta = 10;
+    public static int ticks = 9;
+    public static double gravity = 0.01;
+
     /**
      * @param args the command line arguments
      */
@@ -26,11 +29,22 @@ public class Ankkajahti {
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
+        JFrame f = new JFrame("Tetris 0.7");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Ikkuna peliIkkuna = new Ikkuna(ankat);
+        f.add(peliIkkuna);
+        f.pack();
+        f.setVisible(true);
+        long delay;
         while (true) {
             //1000ms delay happens here            
-            now += 1000/ticks;
+            now += 1000 / ticks;
+            delay = now - System.currentTimeMillis();
+            if (delay < 1) {
+                delay = 1;
+            }
             try {
-                Thread.sleep(now - System.currentTimeMillis());
+                Thread.sleep(delay);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
@@ -43,8 +57,12 @@ public class Ankkajahti {
                     ankat.remove(a);
                 }
             }
-
+            
+            
             //Pelitilanteen piirtäminen
+            peliIkkuna.repaint();
+            
+            /*
             ankkaTaulu = new boolean[ankkaKentta][ankkaKentta];
             for (Ankka a : ankat) {
                 ankkaTaulu[Math.round((float) a.getX())][Math.round((float) a.getY())] = true;
@@ -61,18 +79,20 @@ public class Ankkajahti {
             }
             System.out.println("");
             System.out.println("Kentällä " + ankat.size() + " ankkaa.");
+            */
+
             if (r.nextDouble() < 0.9) {
                 continue;
             }
             ankka = new Ankka();
             ankka.setDirection(r.nextDouble() * Math.PI * 2);
-            ankka.setDirection(Math.PI / 4);
-            ankka.setSpeed(r.nextDouble() * 5);
-            ankka.setX(5);
-            ankka.setY(5);
-            
+            //ankka.setDirection(Math.PI / 4);
+            ankka.setSpeed(r.nextDouble() * 0.05);
+            ankka.setX(0.5);
+            ankka.setY(0.5);
+
             ankat.add(ankka);
-            
+
         }
     }
 
