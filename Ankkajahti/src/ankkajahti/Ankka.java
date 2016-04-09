@@ -54,13 +54,15 @@ class Ankka {
     
     
     public void update() {
-        double newX;
-        double newY;
-        newX = getX() + Math.cos(getDirection()) * speed;
-        newY = getY() + Math.sin(getDirection()) * speed;
+        double deltaX;
+        double deltaY;
+        deltaX = Math.cos(getDirection()) * speed / Ankkajahti.ticks;
+        deltaY = Math.sin(getDirection()) * speed / Ankkajahti.ticks - Ankkajahti.gravity / Ankkajahti.ticks;
+        setSpeed(Ankkajahti.ticks * Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
+        setDirection(Math.atan2(deltaY, deltaX));
         
-        setX(newX);
-        setY(newY);
+        setX(getX() + deltaX);
+        setY(getY() + deltaY);
     }
 
     /**

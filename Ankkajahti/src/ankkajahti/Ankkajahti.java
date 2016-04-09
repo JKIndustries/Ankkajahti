@@ -13,7 +13,9 @@ import java.util.Random;
  * @author jphanski
  */
 public class Ankkajahti {
-    public static int ankkaKentta = 10;
+    public static int ankkaKentta = 15;
+    public static int ticks = 7;
+    public static double gravity = 0.5;
     /**
      * @param args the command line arguments
      */
@@ -26,7 +28,7 @@ public class Ankkajahti {
 
         while (true) {
             //1000ms delay happens here            
-            now += 500;
+            now += 1000/ticks;
             try {
                 Thread.sleep(now - System.currentTimeMillis());
             } catch (InterruptedException ex) {
@@ -50,18 +52,22 @@ public class Ankkajahti {
             for (int j = ankkaKentta - 1; j >= 0; j--) {
                 for (int i = 0; i < ankkaKentta; i++) {
                     if (ankkaTaulu[i][j]) {
-                        System.out.print(" Duck ");
+                        System.out.print(" Quack ");
                     } else {
-                        System.out.print("  ..  ");
+                        System.out.print("   .   ");
                     }
                 }
                 System.out.println("");
             }
             System.out.println("");
             System.out.println("Kentällä " + ankat.size() + " ankkaa.");
+            if (r.nextDouble() < 0.9) {
+                continue;
+            }
             ankka = new Ankka();
             ankka.setDirection(r.nextDouble() * Math.PI * 2);
-            ankka.setSpeed(r.nextDouble());
+            ankka.setDirection(Math.PI / 4);
+            ankka.setSpeed(r.nextDouble() * 5);
             ankka.setX(5);
             ankka.setY(5);
             
