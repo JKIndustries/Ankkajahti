@@ -91,8 +91,22 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        /*for (Ankka a : ankat) {
+            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getWidth() + 20 > e.getX() && a.getY() * this.getHeight()< e.getY() && a.getY() * this.getHeight() + 20 > e.getY()) {
+                //Tuhotaan ankka johon osui
+                Ankkajahti.tuhoaAnkka(a);
+                System.out.println("Osui!");
+                return;
+            }
+            System.out.print(a.getX()*this.getWidth() + ", " + a.getY() * this.getWidth() + ".\n");
+        }
+        System.out.println("At least you tried :( \n Coordinates: " + e.paramString());*/
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         for (Ankka a : ankat) {
-            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getHeight() + 20 > e.getX() && a.getY() * this.getWidth() < e.getY() && a.getY() * this.getHeight() + 20 > e.getY()) {
+            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getWidth() + 20 > e.getX() && a.getY() * this.getHeight()< e.getY() && a.getY() * this.getHeight() + 20 > e.getY()) {
                 //Tuhotaan ankka johon osui
                 Ankkajahti.tuhoaAnkka(a);
                 System.out.println("Osui!");
@@ -101,11 +115,6 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
             System.out.print(a.getX()*this.getWidth() + ", " + a.getY() * this.getWidth() + ".\n");
         }
         System.out.println("At least you tried :( \n Coordinates: " + e.paramString());
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        
     }
 
     @Override

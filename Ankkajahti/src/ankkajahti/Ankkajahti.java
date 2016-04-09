@@ -17,7 +17,7 @@ public class Ankkajahti {
 
     public static int ankkaKentta = 2;
     public static int ticks = 60;
-    public static double gravity = -0.005;
+    public static double gravity = -0.007;
     public static LinkedList<Ankka> ankat;
 
     /**
@@ -31,7 +31,7 @@ public class Ankkajahti {
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
-        JFrame f = new JFrame("Ankkajahti 0.01");
+        JFrame f = new JFrame("Ankkajahti 0.1");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Ikkuna peliIkkuna = new Ikkuna();
         f.add(peliIkkuna);
@@ -92,7 +92,7 @@ public class Ankkajahti {
                 peliIkkuna.fps = 0;
                 fpsCounter += 1000;
             }
-            if (r.nextDouble() < 1.0 - 1.0 / ticks) {
+            if (r.nextDouble() < 1.0 - 0.80 / ticks) {
                 continue;
             }
             ankka = new Ankka();

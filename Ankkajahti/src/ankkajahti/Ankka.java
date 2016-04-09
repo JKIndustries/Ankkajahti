@@ -23,7 +23,7 @@ class Ankka {
     public Ankka() {
         setDirection(r.nextDouble() * Math.PI / 4 + 9 * Math.PI / 8);
         //setDirection(Math.PI / 4);
-        setSpeed(r.nextDouble() * 0.3 + 0.5);
+        setSpeed(r.nextDouble() * 0.15 + 0.6);
         setX(1.0);
         setY(0.70);
     }
