@@ -50,7 +50,7 @@ public class Ankkajahti {
             for (int j = ankkaKentta - 1; j >= 0; j--) {
                 for (int i = 0; i < ankkaKentta; i++) {
                     if (ankkaTaulu[i][j]) {
-                        System.out.print(" Duck ");
+                        System.out.print(" Quack ");
                     } else {
                         System.out.print("  ..  ");
                     }
