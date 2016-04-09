@@ -5,19 +5,27 @@
  */
 package ankkajahti;
 
+import java.util.Random;
+
 /**
  *
  * @author jphanski
  */
 class Ankka {
+
     private double x;
     private double y;
     private double speed;
     private double direction;
-    
+    private static Random r = new Random();
+
     public Ankka() {
-        
-    } 
+        setDirection(r.nextDouble() * Math.PI / 4 + 9 * Math.PI / 8);
+        //setDirection(Math.PI / 4);
+        setSpeed(r.nextDouble() * 0.3 + 0.5);
+        setX(1.0);
+        setY(0.70);
+    }
 
     public double getX() {
         return x;
@@ -50,9 +58,7 @@ class Ankka {
     public void setDirection(double direction) {
         this.direction = direction;
     }
-    
-    
-    
+
     public void update() {
         double deltaX;
         double deltaY;
@@ -60,15 +66,16 @@ class Ankka {
         deltaY = Math.sin(getDirection()) * speed / Ankkajahti.ticks - Ankkajahti.gravity / Ankkajahti.ticks;
         setSpeed(Ankkajahti.ticks * Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
         setDirection(Math.atan2(deltaY, deltaX));
-        
+
         setX(getX() + deltaX);
         setY(getY() + deltaY);
     }
 
     /**
-     * Tarkistaa onko tämä ankka poistettavissa. Syynä poistoon on ankan poistuminen pelialueelta.
-     * 
-     * @return 
+     * Tarkistaa onko tämä ankka poistettavissa. Syynä poistoon on ankan
+     * poistuminen pelialueelta.
+     *
+     * @return
      */
     boolean isRemoveable() {
         int x = Math.round((float) Math.round(getX()));

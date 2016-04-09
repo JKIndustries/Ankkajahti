@@ -15,9 +15,9 @@ import javax.swing.JFrame;
  */
 public class Ankkajahti {
 
-    public static int ankkaKentta = 10;
-    public static int ticks = 9;
-    public static double gravity = 0.01;
+    public static int ankkaKentta = 2;
+    public static int ticks = 60;
+    public static double gravity = -0.005;
 
     /**
      * @param args the command line arguments
@@ -29,13 +29,14 @@ public class Ankkajahti {
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
-        JFrame f = new JFrame("Tetris 0.7");
+        JFrame f = new JFrame("Ankkajahti 0.01");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Ikkuna peliIkkuna = new Ikkuna(ankat);
         f.add(peliIkkuna);
         f.pack();
         f.setVisible(true);
         long delay;
+        long fpsCounter = System.currentTimeMillis();
         while (true) {
             //1000ms delay happens here            
             now += 1000 / ticks;
@@ -60,7 +61,6 @@ public class Ankkajahti {
             
             
             //Pelitilanteen piirtäminen
-            peliIkkuna.repaint();
             
             /*
             ankkaTaulu = new boolean[ankkaKentta][ankkaKentta];
@@ -80,17 +80,16 @@ public class Ankkajahti {
             System.out.println("");
             System.out.println("Kentällä " + ankat.size() + " ankkaa.");
             */
-
-            if (r.nextDouble() < 0.9) {
+            if (System.currentTimeMillis() > fpsCounter + 1000) {
+                System.out.println("FPS: " + peliIkkuna.fps);
+                peliIkkuna.fps = 0;
+                fpsCounter += 1000;
+            }
+            if (r.nextDouble() < 1.0 - 1.0 / ticks) {
                 continue;
             }
             ankka = new Ankka();
-            ankka.setDirection(r.nextDouble() * Math.PI * 2);
-            //ankka.setDirection(Math.PI / 4);
-            ankka.setSpeed(r.nextDouble() * 0.05);
-            ankka.setX(0.5);
-            ankka.setY(0.5);
-
+            
             ankat.add(ankka);
 
         }

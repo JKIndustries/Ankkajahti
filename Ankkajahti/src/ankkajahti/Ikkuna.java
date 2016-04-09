@@ -17,25 +17,45 @@ import javax.swing.Timer;
  */
 public class Ikkuna extends javax.swing.JPanel implements ActionListener {
     LinkedList<Ankka> ankat;
+    public int fps;
+    private Timer timer;
     /**
      * Creates new form Ikkuna
      */
     public Ikkuna(LinkedList<Ankka> ankat) {
         initComponents();
         this.ankat = ankat;
+        fps = 0;
+        
+        timer = new Timer(1000/Ankkajahti.ticks, this);
+        timer.start(); 
     }
     
     @Override
-    protected void paintComponent(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.cyan);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
         for (Ankka a : ankat) {
-            piirraAnkka(g, a.getX(), a.getY());
+            piirraAnkka(g2d, a.getX(), a.getY());
         }
+        g2d.setColor(Color.BLUE);
+        g2d.fillRect(0, (int) (this.getHeight() * 0.75), this.getWidth(), this.getHeight());
     }
-    protected void piirraAnkka(Graphics g, double x, double y) {
-        g.setColor(Color.YELLOW);
-        g.fillRoundRect((int) (x * this.getWidth()), (int) (y * this.getHeight()), 20, 20, 6, 6);
+    
+    /*@Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+        for (Ankka a : ankat) {
+            piirraAnkka(g2d, a.getX(), a.getY());
+        }
+    }*/
+    protected void piirraAnkka(Graphics2D g2d, double x, double y) {
+        g2d.setColor(Color.YELLOW);
+        g2d.fillRoundRect((int) (x * this.getWidth()), (int) (y * this.getHeight()), 20, 20, 6, 6);
     }
     
     /**
@@ -61,7 +81,10 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.repaint();
+        Toolkit.getDefaultToolkit().sync();
+        fps++;
+        timer.restart();
     }
 
 
