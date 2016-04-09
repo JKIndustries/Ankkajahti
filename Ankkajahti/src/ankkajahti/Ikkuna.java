@@ -21,6 +21,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
     Ankka[] ankat;
     public int fps;
     private Timer timer;
+    public static double hitboxKoko = 0.08;
     /**
      * Creates new form Ikkuna
      */
@@ -57,7 +58,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
     }*/
     protected void piirraAnkka(Graphics2D g2d, double x, double y) {
         g2d.setColor(Color.YELLOW);
-        g2d.fillRoundRect((int) (x * this.getWidth()), (int) (y * this.getHeight()), 20, 20, 6, 6);
+        g2d.fillRoundRect((int) (x * this.getWidth()), (int) (y * this.getHeight()), (int) (this.getWidth() * hitboxKoko), (int) (this.getHeight() * hitboxKoko), 6, 6);
     }
     
     /**
@@ -106,7 +107,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
     @Override
     public void mousePressed(MouseEvent e) {
         for (Ankka a : ankat) {
-            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getWidth() + 20 > e.getX() && a.getY() * this.getHeight()< e.getY() && a.getY() * this.getHeight() + 20 > e.getY()) {
+            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getWidth() + (int) (this.getWidth() * hitboxKoko) > e.getX() && a.getY() * this.getHeight()< e.getY() && a.getY() * this.getHeight() + (int) (this.getHeight() * hitboxKoko) > e.getY()) {
                 //Tuhotaan ankka johon osui
                 Ankkajahti.tuhoaAnkka(a);
                 System.out.println("Osui!");
