@@ -7,12 +7,17 @@ package ankkajahti;
 
 import java.util.LinkedList;
 import java.util.Random;
+import javax.swing.JFrame;
 
 /**
  *
  * @author jphanski
  */
 public class Ankkajahti {
+
+    public static int ankkaKentta = 10;
+    public static int ticks = 9;
+    public static double gravity = 0.01;
 
     /**
      * @param args the command line arguments
@@ -24,11 +29,22 @@ public class Ankkajahti {
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
+        JFrame f = new JFrame("Tetris 0.7");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Ikkuna peliIkkuna = new Ikkuna(ankat);
+        f.add(peliIkkuna);
+        f.pack();
+        f.setVisible(true);
+        long delay;
         while (true) {
             //1000ms delay happens here            
-            now += 500;
+            now += 1000 / ticks;
+            delay = now - System.currentTimeMillis();
+            if (delay < 1) {
+                delay = 1;
+            }
             try {
-                Thread.sleep(now - System.currentTimeMillis());
+                Thread.sleep(delay);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
@@ -41,32 +57,42 @@ public class Ankkajahti {
                     ankat.remove(a);
                 }
             }
-
+            
+            
             //Pelitilanteen piirtäminen
-            ankkaTaulu = new boolean[20][20];
+            peliIkkuna.repaint();
+            
+            /*
+            ankkaTaulu = new boolean[ankkaKentta][ankkaKentta];
             for (Ankka a : ankat) {
                 ankkaTaulu[Math.round((float) a.getX())][Math.round((float) a.getY())] = true;
             }
-            for (int j = 20 - 1; j >= 0; j--) {
-                for (int i = 0; i < 20; i++) {
+            for (int j = ankkaKentta - 1; j >= 0; j--) {
+                for (int i = 0; i < ankkaKentta; i++) {
                     if (ankkaTaulu[i][j]) {
-                        System.out.print(" Duck ");
+                        System.out.print(" Quack ");
                     } else {
-                        System.out.print("  ..  ");
+                        System.out.print("   .   ");
                     }
                 }
                 System.out.println("");
             }
             System.out.println("");
             System.out.println("Kentällä " + ankat.size() + " ankkaa.");
+            */
+
+            if (r.nextDouble() < 0.9) {
+                continue;
+            }
             ankka = new Ankka();
             ankka.setDirection(r.nextDouble() * Math.PI * 2);
-            ankka.setSpeed(r.nextDouble());
-            ankka.setX(5);
-            ankka.setY(5);
-            
+            //ankka.setDirection(Math.PI / 4);
+            ankka.setSpeed(r.nextDouble() * 0.05);
+            ankka.setX(0.5);
+            ankka.setY(0.5);
+
             ankat.add(ankka);
-            
+
         }
     }
 

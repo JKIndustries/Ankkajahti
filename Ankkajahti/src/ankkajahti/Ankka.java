@@ -54,13 +54,15 @@ class Ankka {
     
     
     public void update() {
-        double newX;
-        double newY;
-        newX = getX() + Math.cos(getDirection()) * speed;
-        newY = getY() + Math.sin(getDirection()) * speed;
+        double deltaX;
+        double deltaY;
+        deltaX = Math.cos(getDirection()) * speed / Ankkajahti.ticks;
+        deltaY = Math.sin(getDirection()) * speed / Ankkajahti.ticks - Ankkajahti.gravity / Ankkajahti.ticks;
+        setSpeed(Ankkajahti.ticks * Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
+        setDirection(Math.atan2(deltaY, deltaX));
         
-        setX(newX);
-        setY(newY);
+        setX(getX() + deltaX);
+        setY(getY() + deltaY);
     }
 
     /**
@@ -71,7 +73,7 @@ class Ankka {
     boolean isRemoveable() {
         int x = Math.round((float) Math.round(getX()));
         int y = Math.round((float) Math.round(getY()));
-        if (x >= 20 || x < 0 || y < 0 || y >= 20) {
+        if (x >= Ankkajahti.ankkaKentta || x < 0 || y < 0 || y >= Ankkajahti.ankkaKentta) {
             return true;
         }
         return false;
