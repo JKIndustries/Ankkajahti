@@ -19,6 +19,7 @@ import javax.swing.Timer;
  */
 public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseListener {
     Ankka[] ankat;
+    LinkedList<Ankka> tuhotut;
     public int fps;
     private Timer timer;
     public static double hitboxKoko = 0.08;
@@ -29,7 +30,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         initComponents();
         fps = 0;
         addMouseListener(this);
-        
+        tuhotut = new LinkedList<Ankka>();
         timer = new Timer(1000/Ankkajahti.ticks, this);
         timer.start(); 
     }
@@ -40,6 +41,15 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.cyan);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+        for (Ankka a : tuhotut) {
+            g2d.setColor(Color.RED);
+            g2d.fillRoundRect((int) (a.getX() * this.getWidth()), (int) (a.getY() * this.getHeight()), (int) (this.getWidth() * hitboxKoko), (int) (this.getHeight() * hitboxKoko), 6, 6);
+            a.update();
+            a.destruction--;
+            if (a.destruction < 0) {
+                tuhotut.remove(a);
+            }
+        }
         for (Ankka a : ankat) {
             piirraAnkka(g2d, a.getX(), a.getY());
         }
@@ -109,6 +119,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         for (Ankka a : ankat) {
             if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getWidth() + (int) (this.getWidth() * hitboxKoko) > e.getX() && a.getY() * this.getHeight()< e.getY() && a.getY() * this.getHeight() + (int) (this.getHeight() * hitboxKoko) > e.getY()) {
                 //Tuhotaan ankka johon osui
+                tuhotut.add(a);
                 Ankkajahti.tuhoaAnkka(a);
                 System.out.println("Osui!");
                 return;

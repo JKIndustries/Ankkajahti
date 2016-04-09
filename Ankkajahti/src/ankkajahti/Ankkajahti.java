@@ -92,7 +92,7 @@ public class Ankkajahti {
                 peliIkkuna.fps = 0;
                 fpsCounter += 1000;
             }
-            if (r.nextDouble() < 1.0 - 0.80 / ticks) {
+            if (r.nextDouble() < 1.0 - 0.8 / ticks) {
                 continue;
             }
             ankka = new Ankka();

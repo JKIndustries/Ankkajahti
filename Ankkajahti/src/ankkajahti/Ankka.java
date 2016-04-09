@@ -18,13 +18,15 @@ class Ankka {
     private double speed;
     private double direction;
     private static Random r = new Random();
+    public int destruction = 8;
     
     
     public Ankka() {
-        setDirection(r.nextDouble() * Math.PI / 4 + 9 * Math.PI / 8);
+        double temp = r.nextDouble();
+        setDirection(r.nextDouble() * Math.PI / 8 + (14 - 5 * temp) * Math.PI / 8);
         //setDirection(Math.PI / 4);
         setSpeed(r.nextDouble() * 0.15 + 0.6);
-        setX(1.0);
+        setX(temp);
         setY(0.70);
     }
 
