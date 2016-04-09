@@ -13,7 +13,7 @@ import java.util.Random;
  * @author jphanski
  */
 public class Ankkajahti {
-
+    public static int ankkaKentta = 10;
     /**
      * @param args the command line arguments
      */
@@ -43,12 +43,12 @@ public class Ankkajahti {
             }
 
             //Pelitilanteen piirtäminen
-            ankkaTaulu = new boolean[20][20];
+            ankkaTaulu = new boolean[ankkaKentta][ankkaKentta];
             for (Ankka a : ankat) {
                 ankkaTaulu[Math.round((float) a.getX())][Math.round((float) a.getY())] = true;
             }
-            for (int j = 20 - 1; j >= 0; j--) {
-                for (int i = 0; i < 20; i++) {
+            for (int j = ankkaKentta - 1; j >= 0; j--) {
+                for (int i = 0; i < ankkaKentta; i++) {
                     if (ankkaTaulu[i][j]) {
                         System.out.print(" Duck ");
                     } else {
