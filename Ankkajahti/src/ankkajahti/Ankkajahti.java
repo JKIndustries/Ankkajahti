@@ -20,11 +20,17 @@ public class Ankkajahti {
     public static int ticks = 60;
     public static double gravity = -0.007;
     public static LinkedList<Ankka> ankat;
+    public static LinkedList<Ankka> tuhottavat;
     public static int ohiMenneet;
     public static int pisteet;
+    public static String titleText;
     public static boolean infoTekstiMuuttunut = true;
     private static String infoText = "";
     private static double infoTextFade = 0.8;
+    private static int ruleState;
+    private static final int GAMERULES_PRE_GAME = 1;
+    private static final int GAMERULES_GAME = 2;
+    private static final int GAMERULES_POST_GAME = 3;
 
     /**
      * @param args the command line arguments
@@ -33,8 +39,11 @@ public class Ankkajahti {
         Ankka ankka;
         long now = System.currentTimeMillis();
         ankat = new LinkedList<>();
+        tuhottavat = new LinkedList<>();
         Random r = new Random();
         boolean[][] ankkaTaulu;
+        double peliViive = 5;
+        int countDown = 4;
 
         JFrame f = new JFrame("Ankkajahti 0.2");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,8 +55,11 @@ public class Ankkajahti {
         long fpsCounter = System.currentTimeMillis();
         pisteet = 0;
         ohiMenneet = 0;
+        ruleState = GAMERULES_PRE_GAME;
+        titleText = "Prepare!";
         while (true) {
-            //1000ms delay happens here            
+
+            //Waiting for ticks happens here            
             now += 1000 / ticks;
             delay = now - System.currentTimeMillis();
             if (delay < 1) {
@@ -59,62 +71,64 @@ public class Ankkajahti {
                 Thread.currentThread().interrupt();
             }
 
-            //Pelitilanteen päivitys
-            for (int i = ankat.size() - 1; i >= 0; i--) {
-                Ankka a = ankat.get(i);
-                a.update();
-                if (a.isRemoveable()) {
-                    ankat.remove(a);
-                    ohiMenneet++;
-                }
-            }
-            PriorityQueue<DrawableObject> piirrettavat = new PriorityQueue<>();
-            for (int i = 0; i<ankat.size(); i++) {
-                piirrettavat.add(new DrawableAnkka(ankat.get(i)));
-            }
-            peliIkkuna.objektit = piirrettavat;
-            
-            //Pelitilanteen piirtäminen
-            
-            /*
-            ankkaTaulu = new boolean[ankkaKentta][ankkaKentta];
-            for (Ankka a : ankat) {
-                ankkaTaulu[Math.round((float) a.getX())][Math.round((float) a.getY())] = true;
-            }
-            for (int j = ankkaKentta - 1; j >= 0; j--) {
-                for (int i = 0; i < ankkaKentta; i++) {
-                    if (ankkaTaulu[i][j]) {
-                        System.out.print(" Quack ");
-                    } else {
-                        System.out.print("   .   ");
-                    }
-                }
-                System.out.println("");
-            }
-            System.out.println("");
-            System.out.println("Kentällä " + ankat.size() + " ankkaa.");
-            */
-            if (System.currentTimeMillis() > fpsCounter + 1000) {
-                //System.out.println("FPS: " + peliIkkuna.fps);
-                peliIkkuna.fps = 0;
-                fpsCounter += 1000;
-            }
+            //Infotekstin piirto ja poisto
             infoTextFade -= 1.0 / ticks;
             if (infoTextFade < 0) {
                 infoText = "";
             }
-            if (r.nextDouble() < 1.0 - 0.8 / ticks) {
-                continue;
-            }
-            ankka = new Ankka();
-            
-            ankat.add(ankka);
 
+            switch (ruleState) {
+                //Ankkojen lisääminen
+
+                case GAMERULES_GAME:
+                    if (r.nextDouble() > 1.0 - 0.8 / ticks) {
+                        ankka = new Ankka();
+                        ankat.add(ankka);
+                    }
+
+                    //Pelitilanteen päivitys
+                    for (Ankka a : tuhottavat) {
+                        ankat.remove(a);
+                    }
+                    tuhottavat = new LinkedList<>();
+                    for (int i = ankat.size() - 1; i >= 0; i--) {
+                        Ankka a = ankat.get(i);
+                        a.update();
+                        if (a.isRemoveable()) {
+                            ankat.remove(a);
+                            ohiMenneet++;
+                        }
+                    }
+                    PriorityQueue<DrawableObject> piirrettavat = new PriorityQueue<>();
+                    for (int i = 0; i < ankat.size(); i++) {
+                        piirrettavat.add(new DrawableAnkka(ankat.get(i)));
+                    }
+                    peliIkkuna.objektit = piirrettavat;
+                    break;
+                case GAMERULES_PRE_GAME:                    
+                    peliViive -= 1.0 / ticks;
+                    if (peliViive < 0) {
+                        infoTextFade = 0.8;
+                        infoTekstiMuuttunut = true;
+                        infoText = "Peli alkaa!";
+                        titleText = "Shoot 'em ducks!";
+                        
+                        ruleState = GAMERULES_GAME;
+                    }
+                    else if (peliViive < countDown) {
+                        infoTextFade = 0.5;
+                        infoTekstiMuuttunut = true;
+                        infoText = countDown + "...";
+                        
+                        countDown--;
+                    }
+                    break;
+            }
         }
     }
 
     static void tuhoaAnkka(Ankka a) {
-        ankat.remove(a);
+        tuhottavat.add(a);
         pisteet++;
         infoTekstiMuuttunut = true;
         infoText = "Excellent!";
@@ -122,15 +136,17 @@ public class Ankkajahti {
     }
 
     static String getTitleText() {
-        return "Ankkajahti";
+        return titleText;
     }
 
     static String getInfoText() {
         return infoText;
     }
+
     static String getPisteText() {
         return "Pisteet: " + pisteet;
     }
+
     static String getOhiMenneetText() {
         return "Ohimenneitä: " + ohiMenneet;
     }

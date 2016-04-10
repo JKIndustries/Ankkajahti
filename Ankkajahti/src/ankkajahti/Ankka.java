@@ -15,12 +15,20 @@ class Ankka {
 
     private double x;
     private double y;
+    /**
+     * Nopeus. Yksikkönä ruudun pituus per sekunti.
+     */
     private double speed;
+    /**
+     * Suunta. Lähtösuunta on suoraan oikealle. Puoli pii on
+     * suoraan alas. Pii on suoraan oikealle. 3/2 pii on suoraan ylös.
+     */
     private double direction;
     private static Random r = new Random();
-    public int destruction = 8;
     
-    
+    /**
+     * Sets new Ankka object with random starting attributes
+     */
     public Ankka() {
         setX(r.nextDouble());
         setY(0.70);
@@ -62,13 +70,17 @@ class Ankka {
     public void setDirection(double direction) {
         this.direction = direction;
     }
-
+    
+    /**
+     * Päivitysfunktio. Ajetaan kerran tickin aikana, eli tällä hetkellä 60x
+     * joka sekunti. Muuttaa ankan sijaintia ja nopeutta.
+     */
     public void update() {
         double deltaX;
         double deltaY;
         deltaX = Math.cos(getDirection()) * speed / Ankkajahti.ticks;
         deltaY = Math.sin(getDirection()) * speed / Ankkajahti.ticks - Ankkajahti.gravity / Ankkajahti.ticks;
-        setSpeed(Ankkajahti.ticks * Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
+        setSpeed(Ankkajahti.ticks * Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));  //Pythagoraan kaava
         setDirection(Math.atan2(deltaY, deltaX));
 
         setX(getX() + deltaX);

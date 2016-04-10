@@ -22,7 +22,7 @@ import javax.swing.Timer;
  */
 public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseListener {
 
-    PriorityQueue<DrawableObject> objektit;
+    PriorityQueue<DrawableObject> objektit = new PriorityQueue<>();
     LinkedList<Ankka> tuhotut;
     public int fps;
     private Timer timer;
