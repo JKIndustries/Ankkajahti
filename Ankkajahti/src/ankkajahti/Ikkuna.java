@@ -60,13 +60,18 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         g2d.setFont(new Font("Monospaced", Font.PLAIN, 15));
         fm = g2d.getFontMetrics();
         
-        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getInfoText())) / 2;
+        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getPisteText())) / 2;
         y = this.getHeight() / 2 + fm.getAscent();
         
-        g2d.drawString(Ankkajahti.getInfoText(), x, y);
+        g2d.drawString(Ankkajahti.getPisteText(), x, y);
+        
+        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getOhiMenneetText())) / 2;
+        y = this.getHeight() / 2 + fm.getAscent() + fm.getHeight();
+        
+        g2d.drawString(Ankkajahti.getOhiMenneetText(), x, y);
         
         for (DrawableObject o : objektit) {
-            o.drawObject(g2d);
+            o.drawObject(g2d, this.getWidth(), this.getHeight());
         }
         g2d.setColor(Color.BLUE);
         g2d.fillRect(0, (int) (this.getHeight() * 0.75), this.getWidth(), this.getHeight());
@@ -133,13 +138,14 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
     @Override
     public void mousePressed(MouseEvent e) {
         for (DrawableObject o : objektit) {
-            if (a.getX() * this.getWidth() < e.getX() && a.getX() * this.getWidth() + (int) (this.getWidth() * hitboxKoko) > e.getX() && a.getY() * this.getHeight() < e.getY() && a.getY() * this.getHeight() + (int) (this.getHeight() * hitboxKoko) > e.getY()) {
+            if (o.getType() != DrawableObject.ANKKA) {
+                continue;
+            }            
+            if (o.testCollision((1.0 * e.getX()) / this.getWidth(), (1.0 * e.getY()) / this.getHeight())) {
                 //Tuhotaan ankka johon osui
-                tuhotut.add(a);
-                Ankkajahti.tuhoaAnkka(a);
+                Ankkajahti.tuhoaAnkka(((DrawableAnkka) o).getAnkka());
                 return;
             }
-            System.out.print(a.getX() * this.getWidth() + ", " + a.getY() * this.getWidth() + ".\n");
         }
     }
 

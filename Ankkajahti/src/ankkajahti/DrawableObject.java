@@ -11,11 +11,11 @@ import java.awt.Graphics2D;
  *
  * @author jphanski
  */
-public interface DrawableObject {
+public interface DrawableObject extends Comparable {
     public static final int ANKKA = 1;
     public double getX();
     public double getY();
     public boolean testCollision(double x, double y);
-    public void drawObject(Graphics2D g2d);
+    public void drawObject(Graphics2D g2d, int screenWidth, int screenHeight);
     public int getType();
 }

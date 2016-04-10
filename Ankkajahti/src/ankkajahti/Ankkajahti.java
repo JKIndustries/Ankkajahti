@@ -16,10 +16,12 @@ import javax.swing.JFrame;
  */
 public class Ankkajahti {
 
-    public static int ankkaKentta = 2;
+    public static int ankkaKentta = 1;
     public static int ticks = 60;
     public static double gravity = -0.007;
     public static LinkedList<Ankka> ankat;
+    public static int ohiMenneet;
+    public static int pisteet;
 
     /**
      * @param args the command line arguments
@@ -31,7 +33,7 @@ public class Ankkajahti {
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
-        JFrame f = new JFrame("Ankkajahti 0.1");
+        JFrame f = new JFrame("Ankkajahti 0.2");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Ikkuna peliIkkuna = new Ikkuna();
         f.add(peliIkkuna);
@@ -39,6 +41,8 @@ public class Ankkajahti {
         f.setVisible(true);
         long delay;
         long fpsCounter = System.currentTimeMillis();
+        pisteet = 0;
+        ohiMenneet = 0;
         while (true) {
             //1000ms delay happens here            
             now += 1000 / ticks;
@@ -58,6 +62,7 @@ public class Ankkajahti {
                 a.update();
                 if (a.isRemoveable()) {
                     ankat.remove(a);
+                    ohiMenneet++;
                 }
             }
             PriorityQueue<DrawableObject> piirrettavat = new PriorityQueue<>();
@@ -103,14 +108,21 @@ public class Ankkajahti {
 
     static void tuhoaAnkka(Ankka a) {
         ankat.remove(a);
+        pisteet++;
     }
 
     static String getTitleText() {
-        return "Title";
+        return "Ankkajahti";
     }
 
     static String getInfoText() {
-        return "Infotext";
+        return "Ankkoja: " + ankat.size() + "\nPisteet: " + pisteet + "\nOhimenneitä: " + ohiMenneet;
+    }
+    static String getPisteText() {
+        return "Pisteet: " + pisteet;
+    }
+    static String getOhiMenneetText() {
+        return "Ohimenneitä: " + ohiMenneet;
     }
 
 }

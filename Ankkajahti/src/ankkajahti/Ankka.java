@@ -82,9 +82,7 @@ class Ankka {
      * @return
      */
     boolean isRemoveable() {
-        int x = Math.round((float) Math.round(getX()));
-        int y = Math.round((float) Math.round(getY()));
-        if (x >= Ankkajahti.ankkaKentta || x < 0 || y < 0 || y >= Ankkajahti.ankkaKentta) {
+        if (getX() >= Ankkajahti.ankkaKentta || getX() < 0 || getY() < 0 || getY() >= Ankkajahti.ankkaKentta) {
             return true;
         }
         return false;
