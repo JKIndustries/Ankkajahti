@@ -94,7 +94,7 @@ class Ankka {
      * @return
      */
     boolean isRemoveable() {
-        if (getX() >= Ankkajahti.ankkaKentta || getX() < 0 || getY() < 0 || getY() >= Ankkajahti.ankkaKentta) {
+        if (getX() >= Ankkajahti.ankkaKentta || getX() < -0.2 || getY() < 0 || getY() >= Ankkajahti.ankkaKentta) {
             return true;
         }
         return false;

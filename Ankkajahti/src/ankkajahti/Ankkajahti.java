@@ -31,6 +31,7 @@ public class Ankkajahti {
     private static final int GAMERULES_PRE_GAME = 1;
     private static final int GAMERULES_GAME = 2;
     private static final int GAMERULES_POST_GAME = 3;
+    private static int streakCounter = 0;
 
     /**
      * @param args the command line arguments
@@ -41,9 +42,8 @@ public class Ankkajahti {
         ankat = new LinkedList<>();
         tuhottavat = new LinkedList<>();
         Random r = new Random();
-        boolean[][] ankkaTaulu;
         double peliViive = 5;
-        int countDown = 4;
+        int countDown = 5;
 
         JFrame f = new JFrame("Ankkajahti 0.2");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,9 +78,16 @@ public class Ankkajahti {
             }
 
             switch (ruleState) {
-                //Ankkojen lisääminen
+                
 
                 case GAMERULES_GAME:
+                    if (ohiMenneet > 10) {
+                        ruleState = GAMERULES_PRE_GAME;
+                        peliViive = 5;
+                        countDown = 5;
+                        titleText = "Game over. Restarting...";
+                    }
+                    //Ankkojen lisääminen
                     if (r.nextDouble() > 1.0 - 0.8 / ticks) {
                         ankka = new Ankka();
                         ankat.add(ankka);
@@ -97,6 +104,10 @@ public class Ankkajahti {
                         if (a.isRemoveable()) {
                             ankat.remove(a);
                             ohiMenneet++;
+                            streakCounter = 0;
+                            infoTekstiMuuttunut = true;
+                            infoText = "Oops!";
+                            infoTextFade = 0.3;
                         }
                     }
                     PriorityQueue<DrawableObject> piirrettavat = new PriorityQueue<>();
@@ -105,21 +116,22 @@ public class Ankkajahti {
                     }
                     peliIkkuna.objektit = piirrettavat;
                     break;
-                case GAMERULES_PRE_GAME:                    
+                case GAMERULES_PRE_GAME:
                     peliViive -= 1.0 / ticks;
                     if (peliViive < 0) {
                         infoTextFade = 0.8;
                         infoTekstiMuuttunut = true;
                         infoText = "Peli alkaa!";
-                        titleText = "Shoot 'em ducks!";
-                        
+                        titleText = "Stage 1";
+                        pisteet = 0;
+                        ohiMenneet = 0;
+                        ankat = new LinkedList<>();
                         ruleState = GAMERULES_GAME;
-                    }
-                    else if (peliViive < countDown) {
+                    } else if (peliViive < countDown) {
                         infoTextFade = 0.5;
                         infoTekstiMuuttunut = true;
                         infoText = countDown + "...";
-                        
+
                         countDown--;
                     }
                     break;
@@ -130,9 +142,12 @@ public class Ankkajahti {
     static void tuhoaAnkka(Ankka a) {
         tuhottavat.add(a);
         pisteet++;
-        infoTekstiMuuttunut = true;
-        infoText = "Excellent!";
-        infoTextFade = 0.8;
+        streakCounter++;
+        if (streakCounter > 2) {
+            infoTekstiMuuttunut = true;
+            infoText = streakCounter + " streak!";
+            infoTextFade = 0.8;
+        }
     }
 
     static String getTitleText() {
