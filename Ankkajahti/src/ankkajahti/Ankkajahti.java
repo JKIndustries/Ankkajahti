@@ -56,7 +56,7 @@ public class Ankkajahti {
         pisteet = 0;
         ohiMenneet = 0;
         ruleState = GAMERULES_PRE_GAME;
-        titleText = "Prepare!";
+        titleText = "GAME STARTING!";
         while (true) {
 
             //Waiting for ticks happens here            
@@ -85,7 +85,7 @@ public class Ankkajahti {
                         ruleState = GAMERULES_PRE_GAME;
                         peliViive = 5;
                         countDown = 5;
-                        titleText = "Game over. Restarting...";
+                        titleText = "GAME OVER...";
                     }
                     //Ankkojen lisääminen
                     if (r.nextDouble() > 1.0 - 0.8 / ticks) {
@@ -122,7 +122,7 @@ public class Ankkajahti {
                         infoTextFade = 0.8;
                         infoTekstiMuuttunut = true;
                         infoText = "Peli alkaa!";
-                        titleText = "Stage 1";
+                        titleText = "STAGE 1";
                         pisteet = 0;
                         ohiMenneet = 0;
                         ankat = new LinkedList<>();

@@ -52,7 +52,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         FontMetrics fm;
         
         g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("SansSerif", Font.BOLD, 22));
+        g2d.setFont(new Font("SansSerif", Font.BOLD, 14));
         fm = g2d.getFontMetrics();
         int x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getTitleText())) / 2;
         int y = fm.getAscent() + 5;
