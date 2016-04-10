@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import javax.swing.Timer;
 
 /**
@@ -21,7 +22,7 @@ import javax.swing.Timer;
  */
 public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseListener {
 
-    Ankka[] ankat;
+    PriorityQueue<DrawableObject> objektit;
     LinkedList<Ankka> tuhotut;
     public int fps;
     private Timer timer;
@@ -46,8 +47,6 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         g2d.setColor(Color.cyan);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-        g2d.setTransform(new AffineTransform());
-
         FontMetrics fm;
         
         g2d.setColor(Color.BLACK);
@@ -66,17 +65,8 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         
         g2d.drawString(Ankkajahti.getInfoText(), x, y);
         
-        for (Ankka a : tuhotut) {
-            g2d.setColor(Color.RED);
-            g2d.fillRoundRect((int) (a.getX() * this.getWidth()), (int) (a.getY() * this.getHeight()), (int) (this.getWidth() * hitboxKoko), (int) (this.getHeight() * hitboxKoko), 6, 6);
-            a.update();
-            a.destruction--;
-            if (a.destruction < 0) {
-                tuhotut.remove(a);
-            }
-        }
-        for (Ankka a : ankat) {
-            piirraAnkka(g2d, a.getX(), a.getY());
+        for (DrawableObject o : objektit) {
+            o.drawObject(g2d);
         }
         g2d.setColor(Color.BLUE);
         g2d.fillRect(0, (int) (this.getHeight() * 0.75), this.getWidth(), this.getHeight());
