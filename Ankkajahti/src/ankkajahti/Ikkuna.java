@@ -35,7 +35,6 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         initComponents();
         fps = 0;
         addMouseListener(this);
-        tuhotut = new LinkedList<Ankka>();
         //timer = new Timer(1000 / Ankkajahti.ticks, this);
         timer = new Timer(10, this);
         timer.start();
@@ -129,10 +128,11 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         }
         System.out.println("At least you tried :( \n Coordinates: " + e.paramString());*/
     }
-
+    
+    
     @Override
     public void mousePressed(MouseEvent e) {
-        for (Ankka a : ankat) {
+        for (DrawableObject o : objektit) {
             if (a.getX() * this.getWidth() < e.getX() && a.getX() * this.getWidth() + (int) (this.getWidth() * hitboxKoko) > e.getX() && a.getY() * this.getHeight() < e.getY() && a.getY() * this.getHeight() + (int) (this.getHeight() * hitboxKoko) > e.getY()) {
                 //Tuhotaan ankka johon osui
                 tuhotut.add(a);
