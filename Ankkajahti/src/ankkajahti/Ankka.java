@@ -22,12 +22,13 @@ class Ankka {
     
     
     public Ankka() {
-        double temp = r.nextDouble();
-        setDirection(r.nextDouble() * Math.PI / 8 + (14 - 5 * temp) * Math.PI / 8);
+        setX(r.nextDouble());
+        setY(0.70);
+        
+        setDirection(r.nextDouble() * Math.PI / 8 + (14 - 5 * getX()) * Math.PI / 8);
         //setDirection(Math.PI / 4);
         setSpeed(r.nextDouble() * 0.15 + 0.6);
-        setX(temp);
-        setY(0.70);
+        
     }
 
     public double getX() {

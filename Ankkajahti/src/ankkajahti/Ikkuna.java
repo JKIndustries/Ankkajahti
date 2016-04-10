@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import javax.swing.Timer;
 
@@ -18,11 +20,13 @@ import javax.swing.Timer;
  * @author jphanski
  */
 public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseListener {
+
     Ankka[] ankat;
     LinkedList<Ankka> tuhotut;
     public int fps;
     private Timer timer;
     public static double hitboxKoko = 0.08;
+
     /**
      * Creates new form Ikkuna
      */
@@ -31,16 +35,37 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         fps = 0;
         addMouseListener(this);
         tuhotut = new LinkedList<Ankka>();
-        timer = new Timer(1000/Ankkajahti.ticks, this);
-        timer.start(); 
+        timer = new Timer(1000 / Ankkajahti.ticks, this);
+        timer.start();
     }
-    
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.cyan);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+        g2d.setTransform(new AffineTransform());
+
+        FontMetrics fm;
+        
+        g2d.setColor(Color.BLACK);
+        g2d.setFont(new Font("SansSerif", Font.BOLD, 22));
+        fm = g2d.getFontMetrics();
+        int x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getTitleText())) / 2;
+        int y = fm.getAscent() + 5;
+        
+        g2d.drawString(Ankkajahti.getTitleText(), x, y);
+        g2d.setColor(Color.DARK_GRAY);
+        g2d.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        fm = g2d.getFontMetrics();
+        
+        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getInfoText())) / 2;
+        y = this.getHeight() / 2 + fm.getAscent();
+        
+        g2d.drawString(Ankkajahti.getInfoText(), x, y);
+        
         for (Ankka a : tuhotut) {
             g2d.setColor(Color.RED);
             g2d.fillRoundRect((int) (a.getX() * this.getWidth()), (int) (a.getY() * this.getHeight()), (int) (this.getWidth() * hitboxKoko), (int) (this.getHeight() * hitboxKoko), 6, 6);
@@ -56,7 +81,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         g2d.setColor(Color.BLUE);
         g2d.fillRect(0, (int) (this.getHeight() * 0.75), this.getWidth(), this.getHeight());
     }
-    
+
     /*@Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -70,7 +95,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         g2d.setColor(Color.YELLOW);
         g2d.fillRoundRect((int) (x * this.getWidth()), (int) (y * this.getHeight()), (int) (this.getWidth() * hitboxKoko), (int) (this.getHeight() * hitboxKoko), 6, 6);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -117,33 +142,30 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
     @Override
     public void mousePressed(MouseEvent e) {
         for (Ankka a : ankat) {
-            if (a.getX()*this.getWidth()< e.getX() && a.getX() * this.getWidth() + (int) (this.getWidth() * hitboxKoko) > e.getX() && a.getY() * this.getHeight()< e.getY() && a.getY() * this.getHeight() + (int) (this.getHeight() * hitboxKoko) > e.getY()) {
+            if (a.getX() * this.getWidth() < e.getX() && a.getX() * this.getWidth() + (int) (this.getWidth() * hitboxKoko) > e.getX() && a.getY() * this.getHeight() < e.getY() && a.getY() * this.getHeight() + (int) (this.getHeight() * hitboxKoko) > e.getY()) {
                 //Tuhotaan ankka johon osui
                 tuhotut.add(a);
                 Ankkajahti.tuhoaAnkka(a);
-                System.out.println("Osui!");
                 return;
             }
-            System.out.print(a.getX()*this.getWidth() + ", " + a.getY() * this.getWidth() + ".\n");
+            System.out.print(a.getX() * this.getWidth() + ", " + a.getY() * this.getWidth() + ".\n");
         }
-        System.out.println("At least you tried :( \n Coordinates: " + e.paramString());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        
-    }
 
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -106,4 +106,12 @@ public class Ankkajahti {
         ankat.remove(a);
     }
 
+    static String getTitleText() {
+        return "Title";
+    }
+
+    static String getInfoText() {
+        return "Infotext";
+    }
+
 }
