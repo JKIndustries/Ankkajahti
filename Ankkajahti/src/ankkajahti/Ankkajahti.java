@@ -22,6 +22,9 @@ public class Ankkajahti {
     public static LinkedList<Ankka> ankat;
     public static int ohiMenneet;
     public static int pisteet;
+    public static boolean infoTekstiMuuttunut = true;
+    private static String infoText = "";
+    private static double infoTextFade = 0.8;
 
     /**
      * @param args the command line arguments
@@ -96,6 +99,10 @@ public class Ankkajahti {
                 peliIkkuna.fps = 0;
                 fpsCounter += 1000;
             }
+            infoTextFade -= 1.0 / ticks;
+            if (infoTextFade < 0) {
+                infoText = "";
+            }
             if (r.nextDouble() < 1.0 - 0.8 / ticks) {
                 continue;
             }
@@ -109,6 +116,9 @@ public class Ankkajahti {
     static void tuhoaAnkka(Ankka a) {
         ankat.remove(a);
         pisteet++;
+        infoTekstiMuuttunut = true;
+        infoText = "Excellent!";
+        infoTextFade = 0.8;
     }
 
     static String getTitleText() {
@@ -116,7 +126,7 @@ public class Ankkajahti {
     }
 
     static String getInfoText() {
-        return "Ankkoja: " + ankat.size() + "\nPisteet: " + pisteet + "\nOhimenneitä: " + ohiMenneet;
+        return infoText;
     }
     static String getPisteText() {
         return "Pisteet: " + pisteet;

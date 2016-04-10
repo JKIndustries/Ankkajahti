@@ -27,7 +27,7 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
     public int fps;
     private Timer timer;
     public static double hitboxKoko = 0.08;
-
+    double infoTekstiKoko = 10;
     /**
      * Creates new form Ikkuna
      */
@@ -38,6 +38,8 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         //timer = new Timer(1000 / Ankkajahti.ticks, this);
         timer = new Timer(10, this);
         timer.start();
+        
+        
     }
 
     @Override
@@ -55,26 +57,44 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         int x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getTitleText())) / 2;
         int y = fm.getAscent() + 5;
         
-        g2d.drawString(Ankkajahti.getTitleText(), x, y);
-        g2d.setColor(Color.DARK_GRAY);
-        g2d.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        fm = g2d.getFontMetrics();
-        
-        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getPisteText())) / 2;
-        y = this.getHeight() / 2 + fm.getAscent();
-        
-        g2d.drawString(Ankkajahti.getPisteText(), x, y);
-        
-        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getOhiMenneetText())) / 2;
-        y = this.getHeight() / 2 + fm.getAscent() + fm.getHeight();
-        
-        g2d.drawString(Ankkajahti.getOhiMenneetText(), x, y);
+        g2d.drawString(Ankkajahti.getTitleText(), x, y);        
         
         for (DrawableObject o : objektit) {
             o.drawObject(g2d, this.getWidth(), this.getHeight());
         }
         g2d.setColor(Color.BLUE);
         g2d.fillRect(0, (int) (this.getHeight() * 0.75), this.getWidth(), this.getHeight());
+        
+        g2d.setColor(Color.GRAY);
+        g2d.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        fm = g2d.getFontMetrics();
+        
+        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getPisteText())) - 5;
+        y = this.getHeight() - fm.getDescent() - fm.getHeight() - 5;
+        
+        g2d.drawString(Ankkajahti.getPisteText(), x, y);
+        
+        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getOhiMenneetText())) - 5;
+        y = this.getHeight() - fm.getDescent() - 5;
+        
+        g2d.drawString(Ankkajahti.getOhiMenneetText(), x, y);
+        
+        if (Ankkajahti.infoTekstiMuuttunut) {
+            Ankkajahti.infoTekstiMuuttunut = false;
+            infoTekstiKoko = 12;
+            
+        }
+        infoTekstiKoko -= 20.0 / Ankkajahti.ticks;
+        if (infoTekstiKoko < 1) {
+            infoTekstiKoko = 1;
+        }
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2d.setFont(new Font("Monospaced", Font.PLAIN, (int) (22 + infoTekstiKoko)));
+        fm = g2d.getFontMetrics();
+        x = (this.getWidth() - (int) fm.stringWidth(Ankkajahti.getInfoText())) / 2;
+        y = this.getHeight() / 4;
+        
+        g2d.drawString(Ankkajahti.getInfoText(), x, y);
     }
 
     /*@Override
