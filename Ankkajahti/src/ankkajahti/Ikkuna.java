@@ -36,7 +36,8 @@ public class Ikkuna extends javax.swing.JPanel implements ActionListener, MouseL
         fps = 0;
         addMouseListener(this);
         tuhotut = new LinkedList<Ankka>();
-        timer = new Timer(1000 / Ankkajahti.ticks, this);
+        //timer = new Timer(1000 / Ankkajahti.ticks, this);
+        timer = new Timer(10, this);
         timer.start();
     }
 

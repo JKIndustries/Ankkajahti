@@ -6,6 +6,7 @@
 package ankkajahti;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Random;
 import javax.swing.JFrame;
 
@@ -27,7 +28,6 @@ public class Ankkajahti {
         Ankka ankka;
         long now = System.currentTimeMillis();
         ankat = new LinkedList<>();
-        Ankka[] piirrettavatAnkat;
         Random r = new Random();
         boolean[][] ankkaTaulu;
 
@@ -60,12 +60,11 @@ public class Ankkajahti {
                     ankat.remove(a);
                 }
             }
-            
-            piirrettavatAnkat = new Ankka[ankat.size()];
+            PriorityQueue<DrawableObject> piirrettavat = new PriorityQueue<>();
             for (int i = 0; i<ankat.size(); i++) {
-                piirrettavatAnkat[i] = ankat.get(i);
+                piirrettavat.add(new DrawableAnkka(ankat.get(i)));
             }
-            peliIkkuna.ankat = piirrettavatAnkat;
+            peliIkkuna.objektit = piirrettavat;
             
             //Pelitilanteen piirtäminen
             

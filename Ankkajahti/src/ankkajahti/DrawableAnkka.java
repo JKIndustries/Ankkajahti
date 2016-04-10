@@ -18,6 +18,11 @@ public class DrawableAnkka implements DrawableObject {
     private double y;
     private double leveys;
     private double korkeus;
+    
+    public DrawableAnkka(Ankka ankka) {
+        
+    }
+    
     @Override
     public double getX() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
