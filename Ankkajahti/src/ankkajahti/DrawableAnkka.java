@@ -52,10 +52,16 @@ public class DrawableAnkka implements DrawableObject {
     public Ankka getAnkka() {
         return ankka;
     }
+    @Override
+    public int getDepth() {
+        return 100;
+    }
 
     @Override
     public int compareTo(Object o) {
-        return 0;
+        return getDepth() - ((DrawableObject) o).getDepth();
+          
     }
+    
     
 }

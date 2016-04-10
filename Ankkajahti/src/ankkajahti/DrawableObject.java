@@ -18,4 +18,5 @@ public interface DrawableObject extends Comparable {
     public boolean testCollision(double x, double y);
     public void drawObject(Graphics2D g2d, int screenWidth, int screenHeight);
     public int getType();
+    public int getDepth();
 }
